@@ -34,12 +34,12 @@ const Dashboard: React.FC = () => {
   ]);
 
   useEffect(() => {
-    fetch('https://intern-backend.onrender.com/api/intern')
+    fetch('https://intern-api-backend.onrender.com/api/intern')
       .then(res => res.json())
       .then(data => setInternData(data))
       .catch(err => console.error('Error fetching intern data:', err));
 
-    fetch('https://intern-backend.onrender.com/api/leaderboard')
+    fetch('https://intern-api-backend.onrender.com/api/leaderboard')
       .then(res => res.json())
       .then(data => {
         setLeaderboard(data.leaders);
