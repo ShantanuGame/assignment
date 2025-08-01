@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer,
 } from 'recharts';
-import { useNavigate } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -34,15 +33,13 @@ const Dashboard: React.FC = () => {
     { message: 'Mihir submitted final project', time: '2 hours ago' },
   ]);
 
-  const navigate = useNavigate();
-
   useEffect(() => {
-    fetch('http://localhost:8000/api/intern')
+    fetch('https://intern-backend.onrender.com/api/intern')
       .then(res => res.json())
       .then(data => setInternData(data))
       .catch(err => console.error('Error fetching intern data:', err));
 
-    fetch('http://localhost:8000/api/leaderboard')
+    fetch('https://intern-backend.onrender.com/api/leaderboard')
       .then(res => res.json())
       .then(data => {
         setLeaderboard(data.leaders);
@@ -119,17 +116,6 @@ const Dashboard: React.FC = () => {
     color: isDark ? '#000000' : '#ffffff',
     cursor: 'pointer',
     marginLeft: '10px',
-  };
-
-  const actionButtonStyle: React.CSSProperties = {
-    padding: '10px',
-    marginTop: '10px',
-    borderRadius: '6px',
-    backgroundColor: '#0070f3',
-    color: 'white',
-    border: 'none',
-    cursor: 'pointer',
-    width: '100%',
   };
 
   const progressBarContainer: React.CSSProperties = {
@@ -244,7 +230,6 @@ const Dashboard: React.FC = () => {
             </div>
             <p style={{ marginTop: '10px', fontSize: '14px' }}>75% completed</p>
           </div>
-
 
           <div style={cardStyle}>
             <h3>Recent Activity</h3>
