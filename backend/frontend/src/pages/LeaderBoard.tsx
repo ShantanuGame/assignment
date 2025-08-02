@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const containerStyle: React.CSSProperties = {
   padding: '20px',
@@ -31,15 +31,27 @@ const tdStyle: React.CSSProperties = {
   padding: '12px 15px',
 };
 
-const rows = [
-  { rank: 1, name: 'Alice', score: 980 },
-  { rank: 2, name: 'Bob', score: 870 },
-  { rank: 3, name: 'Charlie', score: 850 },
-  { rank: 4, name: 'David', score: 830 },
-  { rank: 5, name: 'Eva', score: 800 },
-];
-
 const Leaderboard: React.FC = () => {
+  const [rows, setRows] = useState<
+    { rank: number; name: string; score: number }[]
+  >([]);
+
+  useEffect(() => {
+    fetch('https://assignment-1-0q0c.onrender.com/api/leaderboard')
+      .then((res) => res.json())
+      .then((data) => {
+        const sorted = data.leaders
+          .sort((a: any, b: any) => b.amount - a.amount)
+          .map((item: any, index: number) => ({
+            rank: index + 1,
+            name: item.name,
+            score: item.amount,
+          }));
+        setRows(sorted);
+      })
+      .catch((err) => console.error('Error fetching leaderboard:', err));
+  }, []);
+
   return (
     <div style={containerStyle}>
       <h1 style={headerStyle}>Leaderboard</h1>
@@ -48,7 +60,7 @@ const Leaderboard: React.FC = () => {
           <tr>
             <th style={thStyle}>Rank</th>
             <th style={thStyle}>Name</th>
-            <th style={thStyle}>Score</th>
+            <th style={thStyle}>Amount</th>
           </tr>
         </thead>
         <tbody>
@@ -56,7 +68,7 @@ const Leaderboard: React.FC = () => {
             <tr key={rank}>
               <td style={tdStyle}>{rank}</td>
               <td style={tdStyle}>{name}</td>
-              <td style={tdStyle}>{score}</td>
+              <td style={tdStyle}>₹{score}</td>
             </tr>
           ))}
         </tbody>
